@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://example.com/reservation"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             name="ReservationService"
+             targetNamespace="http://example.com/reservation">
+
+    <types>
+        <xsd:schema targetNamespace="http://example.com/reservation">
+            <xsd:element name="ReserveClassRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="memberId" type="xsd:int"/>
+                        <xsd:element name="classId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ReserveClassResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="ReserveClassRequest">
+        <part name="parameters" element="tns:ReserveClassRequest"/>
+    </message>
+    <message name="ReserveClassResponse">
+        <part name="parameters" element="tns:ReserveClassResponse"/>
+    </message>
+
+    <portType name="ReservationPortType">
+        <operation name="ReserveClass">
+            <input message="tns:ReserveClassRequest"/>
+            <output message="tns:ReserveClassResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="ReservationBinding" type="tns:ReservationPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="ReserveClass">
+            <soap:operation soapAction="http://example.com/reservation/ReserveClass"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="ReservationService">
+        <port name="ReservationPort" binding="tns:ReservationBinding">
+            <soap:address location="http://localhost/gym_a/soap_api_reservasi.php"/>
+        </port>
+    </service>
+</definitions>
